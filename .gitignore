@@ -1,0 +1,55 @@
+# No ROMs, no bytes extracted from one, no build output.
+*.nes
+*.gb
+*.gbc
+*.sfc
+*.smc
+*.gba
+*.z64
+*.n64
+*.v64
+*.iso
+*.gcm
+*.rvz
+*.wbfs
+*.cue
+*.bin
+baserom*
+# .md is the Mega Drive ROM extension in the fleet's shared ignore list. This
+# project's documentation is Markdown, so the two docs are re-included by name
+# rather than dropping the rule.
+*.md
+!STATUS.md
+!notes/*.md
+
+# Extracted / generated assets from a ROM or from the decomp's committed art.
+*.1bpp
+*.4bpp
+*.8bpp
+*.gbapal
+*.pmdpal
+*.lz
+*.rl
+*.pcm
+*.latfont
+*.hwjpnfont
+*.fwjpnfont
+*.sav
+*.srm
+*.ss[0-9]
+
+# Build trees and outputs
+upstream/
+build-artifacts/
+web/dist/
+web/test/core-node.js
+web/test/core-node.wasm
+*.elf
+*.map
+*.sym
+*.o
+*.a
+*.i
+out/
+__pycache__/
+*.pyc
