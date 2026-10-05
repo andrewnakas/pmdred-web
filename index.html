@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- The security boundary, not a disclaimer.
+     `connect-src 'none'` means the browser refuses fetch, XMLHttpRequest,
+     WebSocket, EventSource and navigator.sendBeacon outright, so the ROM the
+     user picks cannot leave the device even if this page's own JavaScript, or
+     anything injected into it, tried to send it. That is only possible because
+     the wasm is embedded in core.js (SINGLE_FILE) and so is never fetched.
+     `default-src 'none'` closes everything not named below; `form-action
+     'none'` stops a form POST being used as an exfiltration channel; and the
+     absence of 'unsafe-inline' is why the script and stylesheet are separate
+     files rather than inline blocks.
+     NOTE: delivered as a meta tag because this is meant to be hostable as plain
+     static files (GitHub Pages sets no response headers). A real HTTP header
+     would additionally allow frame-ancestors, which meta cannot carry. -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'none';
+  script-src 'self' 'wasm-unsafe-eval';
+  style-src 'self';
+  img-src 'self' data:;
+  connect-src 'none';
+  media-src 'none';
+  font-src 'none';
+  object-src 'none';
+  form-action 'none';
+  base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Mystery Dungeon: Red Rescue Team</title>
+<!-- An inline favicon, so the page never asks the server for /favicon.ico.
+     That request 404s on a static host and shows up as a console error in any
+     honest "no errors" check. img-src allows data: for exactly this. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23120d14'/%3E%3Ccircle cx='8' cy='8' r='4.5' fill='%23e04a4a'/%3E%3Cpath d='M3 8h10' stroke='%23120d14' stroke-width='1.6'/%3E%3Ccircle cx='8' cy='8' r='1.6' fill='%23f0e9ee' stroke='%23120d14' stroke-width='1'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="wrap"><canvas id="canvas" width="240" height="160" tabindex="-1"></canvas></div>
+
+<div id="overlay">
+  <h1>Pokémon Mystery Dungeon: Red Rescue Team</h1>
+  <p class="sub">Built from the <a href="https://github.com/pret/pmd-red">pret/pmd-red</a>
+     decompilation, running on a WebAssembly build of the mGBA core.</p>
+  <div id="pick">
+    <b>Choose your Red Rescue Team ROM</b>
+    <span class="hint">click here, or drag the file in &middot; .gba, 32&nbsp;MB</span>
+  </div>
+  <input id="rom-file" type="file" accept=".gba,.bin">
+  <p class="note"><strong>Your ROM cannot leave this device.</strong> It is read into memory by
+     the browser's own file reader and kept in this page's local storage so you don't have to
+     pick it again. This page is static files with no server, and its
+     Content-Security-Policy sets <code>connect-src 'none'</code> &mdash; the browser blocks
+     every outbound network call the page could make.</p>
+  <p id="err"></p>
+</div>
+
+<div id="hud">
+  <span id="stat">loading…</span>
+  <span class="sep">|</span>
+  <button id="mutebtn" class="muted">muted — click for sound</button>
+  <button id="savebtn">save state</button>
+  <button id="loadbtn">load state</button>
+  <button id="forget">forget ROM</button>
+  <span id="savedot">saved</span>
+  <span class="sep deskonly">|</span>
+  <span class="deskonly"><kbd>X</kbd> A &middot; <kbd>Z</kbd> B &middot; <kbd>↵</kbd> Start &middot;
+    <kbd>⇧</kbd> Select &middot; arrows &middot; <kbd>A</kbd>/<kbd>S</kbd> L/R</span>
+</div>
+
+<script src="core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
